@@ -25,6 +25,7 @@ const selectInputs = (state: ReducerState) => state.inputs;
 export const selectPrincipal = createSelector(selectInputs, inputs.selectPrincipal);
 export const selectRate = createSelector(selectInputs, inputs.selectRate);
 export const selectTerm = createSelector(selectInputs, inputs.selectTerm);
+export const selectFrequency = createSelector(selectInputs, inputs.selectFrequency);
 
 export const selectInputsValid = createSelector(
   [selectPrincipal, selectRate, selectTerm],

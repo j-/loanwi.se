@@ -1,9 +1,10 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { RepaymentFrequency } from './repayments';
 import OutputRepaymentAmounts from './OutputRepaymentAmounts';
 import Dollars from './Dollars';
 import { usePrincipal } from './use-principal';
 import { useTerm } from './use-term';
+import { useFrequency } from './use-frequency';
 import { useAppSelector } from './store';
 import {
   selectAnnualRepaymentAmount,
@@ -15,10 +16,12 @@ import {
 import InputPrincipal from './InputPrincipal';
 import InputRate from './InputRate';
 import InputTerm from './InputTerm';
+import InputFrequency from './InputFrequency';
 
 const App: React.FC = () => {
   const [loanPrincipal] = usePrincipal();
   const [loanTerm] = useTerm();
+  const [repaymentFrequency] = useFrequency();
 
   const isValid = useAppSelector(selectInputsValid);
 
@@ -29,14 +32,6 @@ const App: React.FC = () => {
 
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
     e.preventDefault();
-  }, []);
-
-  const [repaymentFrequency, setRepaymentFrequency] = useState(RepaymentFrequency.MONTHLY);
-
-  const handleChangeRepaymentFrequency = useCallback<React.ChangeEventHandler<HTMLSelectElement>>((e) => {
-    setRepaymentFrequency(
-      Number(e.currentTarget.value) as RepaymentFrequency
-    );
   }, []);
 
   const totalPayments = useMemo(() => {
@@ -63,25 +58,6 @@ const App: React.FC = () => {
     return totalPayments - loanPrincipal;
   }, [loanPrincipal, totalPayments]);
 
-  const repaymentFrequencyInput = (
-    <div className="flex-1">
-      <label htmlFor="App-repayment-frequency">Repayment frequency</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <select
-          id="App-repayment-frequency"
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 h-12 border-grey-light rounded px-3 relative"
-          value={repaymentFrequency}
-          onChange={handleChangeRepaymentFrequency}
-        >
-          <option value={RepaymentFrequency.ANNUALLY}>Annually</option>
-          <option value={RepaymentFrequency.MONTHLY}>Monthly</option>
-          <option value={RepaymentFrequency.FORTNIGHTLY}>Fortnightly</option>
-          <option value={RepaymentFrequency.WEEKLY}>Weekly</option>
-        </select>
-      </div>
-    </div>
-  );
-
   return (
     <div className="App container my-5">
       <h1 className="text-3xl mb-6">Repayment Calculator</h1>
@@ -93,7 +69,7 @@ const App: React.FC = () => {
               <InputRate />
               <InputTerm />
             </div>
-            {repaymentFrequencyInput}
+            <InputFrequency />
             <p><Dollars value={loanPrincipal} round /> principal</p>
             <p><Dollars value={totalInterestPaid} round /> total interest paid</p>
             <p><Dollars value={totalPayments} round /> total payments</p>
