@@ -3,7 +3,7 @@ import { useTerm } from './use-term';
 import { Field } from './types';
 
 const InputTerm: React.FC = () => {
-  const id = `InputRate-${useId()}`;
+  const id = `InputTerm-${useId()}`;
 
   const [term, setTerm] = useTerm();
 
