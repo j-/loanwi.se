@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { calculateRepaymentAmount, RepaymentFrequency } from './repayments';
-import RepaymentAmountsOutput from './RepaymentAmountsOutput';
+import OutputRepaymentAmounts from './OutputRepaymentAmounts';
 import Dollars from './Dollars';
 import { usePrincipal } from './use-principal';
 import { useRate } from './use-rate';
@@ -127,7 +127,7 @@ const App: React.FC = () => {
           </div>
           <div className="sm:flex-1">
             {isValid && (
-              <RepaymentAmountsOutput
+              <OutputRepaymentAmounts
                 annualRepaymentAmount={annualRepaymentAmount}
                 monthlyRepaymentAmount={monthlyRepaymentAmount}
                 fortnightlyRepaymentAmount={fortnightlyRepaymentAmount}

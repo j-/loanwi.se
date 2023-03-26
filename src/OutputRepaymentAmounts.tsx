@@ -1,8 +1,8 @@
 import { memo } from 'react';
-import RepaymentAmountOutput from './RepaymentAmountOutput';
+import OutputRepaymentAmount from './OutputRepaymentAmount';
 import { RepaymentFrequency } from './repayments';
 
-export type RepaymentAmountsOutputProps = {
+export type OutputRepaymentAmountsProps = {
   annualRepaymentAmount: number;
   monthlyRepaymentAmount: number;
   fortnightlyRepaymentAmount: number;
@@ -10,32 +10,32 @@ export type RepaymentAmountsOutputProps = {
   children?: never;
 };
 
-const RepaymentAmountsOutput = memo<RepaymentAmountsOutputProps>(({
+const OutputRepaymentAmounts = memo<OutputRepaymentAmountsProps>(({
   annualRepaymentAmount,
   monthlyRepaymentAmount,
   fortnightlyRepaymentAmount,
   weeklyRepaymentAmount,
 }) => (
   <div className="flex flex-col sm:mt-8 gap-1 sm:gap-2">
-    <RepaymentAmountOutput
+    <OutputRepaymentAmount
       value={annualRepaymentAmount}
       frequency={RepaymentFrequency.ANNUALLY}
     />
-    <RepaymentAmountOutput
+    <OutputRepaymentAmount
       value={monthlyRepaymentAmount}
       frequency={RepaymentFrequency.MONTHLY}
     />
-    <RepaymentAmountOutput
+    <OutputRepaymentAmount
       value={fortnightlyRepaymentAmount}
       frequency={RepaymentFrequency.FORTNIGHTLY}
     />
-    <RepaymentAmountOutput
+    <OutputRepaymentAmount
       value={weeklyRepaymentAmount}
       frequency={RepaymentFrequency.WEEKLY}
     />
   </div>
 ));
 
-RepaymentAmountsOutput.displayName = 'RepaymentAmountsOutput';
+OutputRepaymentAmounts.displayName = 'OutputRepaymentAmounts';
 
-export default RepaymentAmountsOutput;
+export default OutputRepaymentAmounts;
