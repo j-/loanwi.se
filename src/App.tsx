@@ -1,31 +1,16 @@
 import React, { useCallback } from 'react';
-import OutputRepaymentAmounts from './OutputRepaymentAmounts';
 import Dollars from './Dollars';
 import { usePrincipal } from './use-principal';
 import { useAppSelector } from './store';
-import {
-  selectAnnualRepaymentAmount,
-  selectFortnightlyRepaymentAmount,
-  selectInputsValid,
-  selectMonthlyRepaymentAmount,
-  selectTotalInterest,
-  selectTotalPayments,
-  selectWeeklyRepaymentAmount,
-} from './store/reducer-root';
+import { selectTotalInterest, selectTotalPayments } from './store/reducer-root';
 import InputPrincipal from './InputPrincipal';
 import InputRate from './InputRate';
 import InputTerm from './InputTerm';
 import InputFrequency from './InputFrequency';
+import OutputRepaymentAmountsConnected from './OutputRepaymentAmountsConnected';
 
 const App: React.FC = () => {
   const [loanPrincipal] = usePrincipal();
-
-  const isValid = useAppSelector(selectInputsValid);
-
-  const monthlyRepaymentAmount = useAppSelector(selectMonthlyRepaymentAmount);
-  const annualRepaymentAmount = useAppSelector(selectAnnualRepaymentAmount);
-  const fortnightlyRepaymentAmount = useAppSelector(selectFortnightlyRepaymentAmount);
-  const weeklyRepaymentAmount = useAppSelector(selectWeeklyRepaymentAmount);
 
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
     e.preventDefault();
@@ -51,14 +36,7 @@ const App: React.FC = () => {
             <p><Dollars value={totalPayments} round /> total payments</p>
           </div>
           <div className="sm:flex-1">
-            {isValid && (
-              <OutputRepaymentAmounts
-                annualRepaymentAmount={annualRepaymentAmount}
-                monthlyRepaymentAmount={monthlyRepaymentAmount}
-                fortnightlyRepaymentAmount={fortnightlyRepaymentAmount}
-                weeklyRepaymentAmount={weeklyRepaymentAmount}
-              />
-            )}
+            <OutputRepaymentAmountsConnected />
           </div>
         </div>
       </form>
