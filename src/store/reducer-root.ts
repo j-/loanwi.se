@@ -83,3 +83,46 @@ export const selectWeeklyRepaymentAmount = createSelector(
     })
   ),
 );
+
+export const selectTotalPayments = createSelector(
+  [
+    selectAnnualRepaymentAmount,
+    selectFortnightlyRepaymentAmount,
+    selectTerm,
+    selectMonthlyRepaymentAmount,
+    selectFrequency,
+    selectWeeklyRepaymentAmount,
+  ],
+  (
+    annualRepaymentAmount,
+    fortnightlyRepaymentAmount,
+    loanTerm,
+    monthlyRepaymentAmount,
+    repaymentFrequency,
+    weeklyRepaymentAmount,
+  ) => {
+    switch (repaymentFrequency) {
+      case RepaymentFrequency.ANNUALLY:
+        return annualRepaymentAmount * loanTerm;
+      case RepaymentFrequency.MONTHLY:
+        return monthlyRepaymentAmount * RepaymentFrequency.MONTHLY * loanTerm;
+      case RepaymentFrequency.FORTNIGHTLY:
+        return fortnightlyRepaymentAmount * RepaymentFrequency.FORTNIGHTLY * loanTerm;
+      case RepaymentFrequency.WEEKLY:
+        return weeklyRepaymentAmount * RepaymentFrequency.WEEKLY * loanTerm;
+    }
+  },
+);
+
+export const selectTotalInterest = createSelector(
+  [
+    selectPrincipal,
+    selectTotalPayments
+  ],
+  (
+    principal,
+    totalPayments,
+  ) => (
+    totalPayments - principal
+  ),
+);

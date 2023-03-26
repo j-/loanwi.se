@@ -1,16 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
-import { RepaymentFrequency } from './repayments';
+import React, { useCallback } from 'react';
 import OutputRepaymentAmounts from './OutputRepaymentAmounts';
 import Dollars from './Dollars';
 import { usePrincipal } from './use-principal';
-import { useTerm } from './use-term';
-import { useFrequency } from './use-frequency';
 import { useAppSelector } from './store';
 import {
   selectAnnualRepaymentAmount,
   selectFortnightlyRepaymentAmount,
   selectInputsValid,
   selectMonthlyRepaymentAmount,
+  selectTotalInterest,
+  selectTotalPayments,
   selectWeeklyRepaymentAmount,
 } from './store/reducer-root';
 import InputPrincipal from './InputPrincipal';
@@ -20,8 +19,6 @@ import InputFrequency from './InputFrequency';
 
 const App: React.FC = () => {
   const [loanPrincipal] = usePrincipal();
-  const [loanTerm] = useTerm();
-  const [repaymentFrequency] = useFrequency();
 
   const isValid = useAppSelector(selectInputsValid);
 
@@ -34,29 +31,8 @@ const App: React.FC = () => {
     e.preventDefault();
   }, []);
 
-  const totalPayments = useMemo(() => {
-    switch (repaymentFrequency) {
-      case RepaymentFrequency.ANNUALLY:
-        return annualRepaymentAmount * loanTerm;
-      case RepaymentFrequency.MONTHLY:
-        return monthlyRepaymentAmount * RepaymentFrequency.MONTHLY * loanTerm;
-      case RepaymentFrequency.FORTNIGHTLY:
-        return fortnightlyRepaymentAmount * RepaymentFrequency.FORTNIGHTLY * loanTerm;
-      case RepaymentFrequency.WEEKLY:
-        return weeklyRepaymentAmount * RepaymentFrequency.WEEKLY * loanTerm;
-    }
-  }, [
-    annualRepaymentAmount,
-    fortnightlyRepaymentAmount,
-    loanTerm,
-    monthlyRepaymentAmount,
-    repaymentFrequency,
-    weeklyRepaymentAmount,
-  ]);
-
-  const totalInterestPaid = useMemo(() => {
-    return totalPayments - loanPrincipal;
-  }, [loanPrincipal, totalPayments]);
+  const totalPayments = useAppSelector(selectTotalPayments);
+  const totalInterestPaid = useAppSelector(selectTotalInterest);
 
   return (
     <div className="App container my-5">
