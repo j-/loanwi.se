@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session'
 import { createSelector } from 'reselect';
+import { calculateRepaymentAmount, RepaymentFrequency } from '../repayments';
 import * as inputs from './reducer-inputs';
 
 export type ReducerState = {
@@ -31,5 +32,53 @@ export const selectInputsValid = createSelector(
     !isNaN(principal) && principal > 0 &&
     !isNaN(rate) && rate > 0 &&
     !isNaN(term) && term > 0
+  ),
+);
+
+export const selectMonthlyRepaymentAmount = createSelector(
+  [selectPrincipal, selectRate, selectTerm],
+  (principal, rate, term) => (
+    calculateRepaymentAmount({
+      loanPrincipal: principal,
+      interestRate: rate,
+      loanTerm: term,
+      repaymentFrequency: RepaymentFrequency.MONTHLY,
+    })
+  ),
+);
+
+export const selectAnnualRepaymentAmount = createSelector(
+  [selectPrincipal, selectRate, selectTerm],
+  (principal, rate, term) => (
+    calculateRepaymentAmount({
+      loanPrincipal: principal,
+      interestRate: rate,
+      loanTerm: term,
+      repaymentFrequency: RepaymentFrequency.ANNUALLY,
+    })
+  ),
+);
+
+export const selectFortnightlyRepaymentAmount = createSelector(
+  [selectPrincipal, selectRate, selectTerm],
+  (principal, rate, term) => (
+    calculateRepaymentAmount({
+      loanPrincipal: principal,
+      interestRate: rate,
+      loanTerm: term,
+      repaymentFrequency: RepaymentFrequency.ANNUALLY,
+    })
+  ),
+);
+
+export const selectWeeklyRepaymentAmount = createSelector(
+  [selectPrincipal, selectRate, selectTerm],
+  (principal, rate, term) => (
+    calculateRepaymentAmount({
+      loanPrincipal: principal,
+      interestRate: rate,
+      loanTerm: term,
+      repaymentFrequency: RepaymentFrequency.WEEKLY,
+    })
   ),
 );

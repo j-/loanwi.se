@@ -1,58 +1,31 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { calculateRepaymentAmount, RepaymentFrequency } from './repayments';
+import { RepaymentFrequency } from './repayments';
 import OutputRepaymentAmounts from './OutputRepaymentAmounts';
 import Dollars from './Dollars';
 import { usePrincipal } from './use-principal';
-import { useRate } from './use-rate';
 import { useTerm } from './use-term';
 import { useAppSelector } from './store';
-import { selectInputsValid } from './store/reducer-root';
+import {
+  selectAnnualRepaymentAmount,
+  selectFortnightlyRepaymentAmount,
+  selectInputsValid,
+  selectMonthlyRepaymentAmount,
+  selectWeeklyRepaymentAmount,
+} from './store/reducer-root';
 import InputPrincipal from './InputPrincipal';
 import InputRate from './InputRate';
 import InputTerm from './InputTerm';
 
 const App: React.FC = () => {
   const [loanPrincipal] = usePrincipal();
-  const [interestRatePercent] = useRate();
   const [loanTerm] = useTerm();
 
   const isValid = useAppSelector(selectInputsValid);
 
-  const monthlyRepaymentAmount = useMemo(() => {
-    return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipal,
-      interestRate: interestRatePercent,
-      loanTerm,
-      repaymentFrequency: RepaymentFrequency.MONTHLY,
-    });
-  }, [loanPrincipal, interestRatePercent, loanTerm]);
-
-  const annualRepaymentAmount = useMemo(() => {
-    return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipal,
-      interestRate: interestRatePercent,
-      loanTerm,
-      repaymentFrequency: RepaymentFrequency.ANNUALLY,
-    });
-  }, [loanPrincipal, interestRatePercent, loanTerm]);
-
-  const fortnightlyRepaymentAmount = useMemo(() => {
-    return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipal,
-      interestRate: interestRatePercent,
-      loanTerm,
-      repaymentFrequency: RepaymentFrequency.FORTNIGHTLY,
-    });
-  }, [loanPrincipal, interestRatePercent, loanTerm]);
-
-  const weeklyRepaymentAmount = useMemo(() => {
-    return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipal,
-      interestRate: interestRatePercent,
-      loanTerm,
-      repaymentFrequency: RepaymentFrequency.WEEKLY,
-    });
-  }, [loanPrincipal, interestRatePercent, loanTerm]);
+  const monthlyRepaymentAmount = useAppSelector(selectMonthlyRepaymentAmount);
+  const annualRepaymentAmount = useAppSelector(selectAnnualRepaymentAmount);
+  const fortnightlyRepaymentAmount = useAppSelector(selectFortnightlyRepaymentAmount);
+  const weeklyRepaymentAmount = useAppSelector(selectWeeklyRepaymentAmount);
 
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
     e.preventDefault();
