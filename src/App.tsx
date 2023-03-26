@@ -1,98 +1,58 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import useSessionStorageState from 'use-session-storage-state';
-import NumberFormat, { NumberFormatPropsBase } from 'react-number-format';
 import { calculateRepaymentAmount, RepaymentFrequency } from './repayments';
 import RepaymentAmountsOutput from './RepaymentAmountsOutput';
-import Dollars, { symbol } from './Dollars';
-
-const DEFAULT_DEPOSIT_RATIO = 0.2;
-const DEFAULT_LOAN_PRINCIPAL = 30000;
-const DEFAULT_INTEREST_RATE_PERCENT = 15.9;
-const DEFAULT_LOAN_TERM = 7;
-
-enum Field {
-  LOAN_PRINCIPAL = 'principal',
-  INTEREST_RATE = 'rate',
-  LOAN_TERM = 'term',
-  DEPOSIT_PERCENT = 'deposit',
-};
+import Dollars from './Dollars';
+import { usePrincipal } from './use-principal';
+import { useRate } from './use-rate';
+import { useTerm } from './use-term';
+import { useAppSelector } from './store';
+import { selectInputsValid } from './store/reducer-root';
+import InputPrincipal from './InputPrincipal';
+import InputRate from './InputRate';
+import InputTerm from './InputTerm';
 
 const App: React.FC = () => {
-  const [loanPrincipalNumber, setLoanPrincipalNumber] = useSessionStorageState(
-    Field.LOAN_PRINCIPAL,
-    { defaultValue: DEFAULT_LOAN_PRINCIPAL }
-  );
+  const [loanPrincipal] = usePrincipal();
+  const [interestRatePercent] = useRate();
+  const [loanTerm] = useTerm();
 
-  const [interestRatePercent, setInterestRatePercent] = useSessionStorageState(
-    Field.INTEREST_RATE,
-    { defaultValue: DEFAULT_INTEREST_RATE_PERCENT }
-  );
-
-  const [loanTerm, setLoanTerm] = useSessionStorageState(
-    Field.LOAN_TERM,
-    { defaultValue: DEFAULT_LOAN_TERM }
-  );
-
-  const [depositPercent, setDepositPercent] = useState(DEFAULT_DEPOSIT_RATIO * 100);
-  const depositAmount = Math.round(depositPercent / 100 * loanPrincipalNumber);
-
-  const isValid = useMemo(() => (
-    !isNaN(loanPrincipalNumber) && loanPrincipalNumber > 0 &&
-    !isNaN(interestRatePercent) && interestRatePercent > 0 &&
-    !isNaN(loanTerm) && loanTerm > 0
-  ), [interestRatePercent, loanPrincipalNumber, loanTerm]);
+  const isValid = useAppSelector(selectInputsValid);
 
   const monthlyRepaymentAmount = useMemo(() => {
     return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipalNumber,
+      loanPrincipal: loanPrincipal,
       interestRate: interestRatePercent,
       loanTerm,
       repaymentFrequency: RepaymentFrequency.MONTHLY,
     });
-  }, [loanPrincipalNumber, interestRatePercent, loanTerm]);
+  }, [loanPrincipal, interestRatePercent, loanTerm]);
 
   const annualRepaymentAmount = useMemo(() => {
     return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipalNumber,
+      loanPrincipal: loanPrincipal,
       interestRate: interestRatePercent,
       loanTerm,
       repaymentFrequency: RepaymentFrequency.ANNUALLY,
     });
-  }, [loanPrincipalNumber, interestRatePercent, loanTerm]);
+  }, [loanPrincipal, interestRatePercent, loanTerm]);
 
   const fortnightlyRepaymentAmount = useMemo(() => {
     return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipalNumber,
+      loanPrincipal: loanPrincipal,
       interestRate: interestRatePercent,
       loanTerm,
       repaymentFrequency: RepaymentFrequency.FORTNIGHTLY,
     });
-  }, [loanPrincipalNumber, interestRatePercent, loanTerm]);
+  }, [loanPrincipal, interestRatePercent, loanTerm]);
 
   const weeklyRepaymentAmount = useMemo(() => {
     return calculateRepaymentAmount({
-      loanPrincipal: loanPrincipalNumber,
+      loanPrincipal: loanPrincipal,
       interestRate: interestRatePercent,
       loanTerm,
       repaymentFrequency: RepaymentFrequency.WEEKLY,
     });
-  }, [loanPrincipalNumber, interestRatePercent, loanTerm]);
-
-  const handleValueChange = useCallback<NonNullable<NumberFormatPropsBase<unknown>['onValueChange']>>((values) => {
-    setLoanPrincipalNumber(values.floatValue || 0);
-  }, [setLoanPrincipalNumber]);
-
-  const handleChangeInterestRate = useCallback<React.ChangeEventHandler<HTMLInputElement>>((e) => {
-    setInterestRatePercent(e.currentTarget.valueAsNumber);
-  }, [setInterestRatePercent]);
-
-  const handleChangeLoanTerm = useCallback<React.ChangeEventHandler<HTMLInputElement>>((e) => {
-    setLoanTerm(e.currentTarget.valueAsNumber);
-  }, [setLoanTerm]);
-
-  const handleChangeDepositAmountPercent = useCallback<React.ChangeEventHandler<HTMLInputElement>>((e) => {
-    setDepositPercent(e.currentTarget.valueAsNumber);
-  }, []);
+  }, [loanPrincipal, interestRatePercent, loanTerm]);
 
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
     e.preventDefault();
@@ -127,116 +87,8 @@ const App: React.FC = () => {
   ]);
 
   const totalInterestPaid = useMemo(() => {
-    return totalPayments - loanPrincipalNumber;
-  }, [loanPrincipalNumber, totalPayments]);
-
-  const loanAmountInput = (
-    <div className="flex-1">
-      <label htmlFor="App-loan-amount" className="text-grey-darker inline-block mb-2">Loan amount</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <div className="flex -mr-px">
-          <span className="flex items-center leading-normal bg-grey-lighter rounded rounded-r-none border border-r-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">{symbol}</span>
-        </div>
-        <NumberFormat
-          id="App-loan-amount"
-          name={Field.LOAN_PRINCIPAL}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 h-16 text-lg border-grey-light rounded rounded-l-none px-3 relative focus:border-blue focus:shadow"
-          value={loanPrincipalNumber}
-          onValueChange={handleValueChange}
-          thousandSeparator=" "
-          inputMode="numeric"
-          min={0}
-          max={999999999}
-        />
-      </div>
-    </div>
-  );
-
-  const interestRateInput = (
-    <div className="flex-1">
-      <label htmlFor="App-interest-rate">Interest rate</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <input
-          id="App-interest-rate"
-          name={Field.INTEREST_RATE}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 h-12 border-grey-light rounded rounded-r-none px-3 relative"
-          type="number"
-          value={interestRatePercent}
-          onChange={handleChangeInterestRate}
-          inputMode="numeric"
-          min={0}
-          max={100}
-          step={0.1}
-        />
-        <div className="flex -mr-px">
-          <span className="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">%</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const loanTermInput = (
-    <div className="flex-1">
-      <label htmlFor="App-loan-term">Loan term</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <input
-          id="App-loan-term"
-          name={Field.LOAN_TERM}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 h-12 border-grey-light rounded rounded-r-none px-3 relative"
-          type="number"
-          value={loanTerm}
-          onChange={handleChangeLoanTerm}
-          inputMode="numeric"
-          min={1}
-          max={100}
-          step={1}
-        />
-        <div className="flex -mr-px">
-          <span className="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">years</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const depositAmountPercentInput = (
-    <div className="flex-1">
-      <label htmlFor="App-deposit-amount-percent">Deposit amount (%)</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <input
-          id="App-deposit-amount-percent"
-          type="number"
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 border-grey-light rounded rounded-r-none px-3 relative"
-          value={depositPercent}
-          onChange={handleChangeDepositAmountPercent}
-          min={0}
-          max={100}
-          step={5}
-        />
-        <div className="flex -mr-px">
-          <span className="flex items-center leading-normal bg-grey-lighter rounded rounded-l-none border border-l-0 border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">%</span>
-        </div>
-      </div>
-    </div>
-  );
-
-  const depositAmountDollarsInput = (
-    <div className="flex-1">
-      <label htmlFor="App-deposit-amount-dollars">Deposit amount ($)</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
-        <div className="flex">
-          <span className="flex items-center leading-normal bg-grey-lighter rounded border border-grey-light px-3 whitespace-no-wrap text-grey-dark text-sm">$</span>
-        </div>
-        <NumberFormat
-          id="App-deposit-amount-dollars"
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 h-10 rounded rounded-l-none px-3 relative"
-          value={depositAmount}
-          thousandSeparator=" "
-          inputMode="numeric"
-          readOnly
-        />
-      </div>
-    </div>
-  );
+    return totalPayments - loanPrincipal;
+  }, [loanPrincipal, totalPayments]);
 
   const repaymentFrequencyInput = (
     <div className="flex-1">
@@ -263,13 +115,13 @@ const App: React.FC = () => {
       <form onSubmit={handleSubmitForm}>
         <div className="sm:flex gap-8">
           <div className="sm:flex-1">
-            {loanAmountInput}
+            <InputPrincipal />
             <div className="flex gap-2">
-              {interestRateInput}
-              {loanTermInput}
+              <InputRate />
+              <InputTerm />
             </div>
             {repaymentFrequencyInput}
-            <p><Dollars value={loanPrincipalNumber} round /> principal</p>
+            <p><Dollars value={loanPrincipal} round /> principal</p>
             <p><Dollars value={totalInterestPaid} round /> total interest paid</p>
             <p><Dollars value={totalPayments} round /> total payments</p>
           </div>
@@ -284,13 +136,6 @@ const App: React.FC = () => {
             )}
           </div>
         </div>
-        <section hidden>
-          <h2 className="text-xl my-6">Deposit Calculator</h2>
-          <div className="flex gap-2 sm:gap-8">
-            {depositAmountPercentInput}
-            {depositAmountDollarsInput}
-          </div>
-        </section>
       </form>
 
       <br />
