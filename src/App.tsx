@@ -1,23 +1,15 @@
 import React, { useCallback } from 'react';
-import Dollars from './Dollars';
-import { usePrincipal } from './use-principal';
-import { useAppSelector } from './store';
-import { selectTotalInterest, selectTotalPayments } from './store/reducer-root';
 import InputPrincipal from './InputPrincipal';
 import InputRate from './InputRate';
 import InputTerm from './InputTerm';
 import InputFrequency from './InputFrequency';
 import OutputRepaymentAmountsConnected from './OutputRepaymentAmountsConnected';
+import OutputTotalsConnected from './OutputTotalsConnected';
 
 const App: React.FC = () => {
-  const [loanPrincipal] = usePrincipal();
-
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
     e.preventDefault();
   }, []);
-
-  const totalPayments = useAppSelector(selectTotalPayments);
-  const totalInterestPaid = useAppSelector(selectTotalInterest);
 
   return (
     <div className="App container my-5">
@@ -31,9 +23,7 @@ const App: React.FC = () => {
               <InputTerm />
             </div>
             <InputFrequency />
-            <p><Dollars value={loanPrincipal} round /> principal</p>
-            <p><Dollars value={totalInterestPaid} round /> total interest paid</p>
-            <p><Dollars value={totalPayments} round /> total payments</p>
+            <OutputTotalsConnected />
           </div>
           <div className="sm:flex-1">
             <OutputRepaymentAmountsConnected />
