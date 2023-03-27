@@ -4,7 +4,8 @@ import InputRate from './InputRate';
 import InputTerm from './InputTerm';
 import InputFrequency from './InputFrequency';
 import OutputRepaymentAmountsConnected from './OutputRepaymentAmountsConnected';
-import OutputTotalsConnected from './OutputTotalsConnected';
+import OutputTotalsTableConnected from './OutputTotalsTableConnected';
+import OutputTotalsChartConnected from './OutputTotalsChartConnected';
 
 const App: React.FC = () => {
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
@@ -12,10 +13,10 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="App container my-5">
-      <h1 className="text-3xl mb-6">Loan Wise (loanwi.se)</h1>
+    <div className="App container my-10">
+      <h1 className="text-3xl my-10">Loan Wise (loanwi.se)</h1>
       <form onSubmit={handleSubmitForm}>
-        <div className="sm:flex">
+        <div className="my-6 flex flex-col sm:flex-row gap-6">
           <div className="flex flex-col sm:flex-1 gap-2 p-4 bg-slate-100 rounded-md">
             <InputPrincipal />
             <div className="flex gap-2">
@@ -23,13 +24,22 @@ const App: React.FC = () => {
               <InputTerm />
             </div>
           </div>
-          <div className="sm:flex-1 py-4 sm:p-4">
+          <div className="sm:flex-1">
             <OutputRepaymentAmountsConnected />
           </div>
         </div>
-        <div className="mt-4">
-          <InputFrequency />
-          <OutputTotalsConnected />
+        <div className="mt-6 flex flex-col sm:flex-row sm:flex-1 gap-4 p-4 bg-slate-100 rounded-md">
+          <div className="flex-1">
+            <InputFrequency />
+          </div>
+          <div className="flex-[2] flex flex-row gap-4">
+            <div className="flex-1">
+              <OutputTotalsTableConnected />
+            </div>
+            <div className="flex-1">
+              <OutputTotalsChartConnected />
+            </div>
+          </div>
         </div>
       </form>
 

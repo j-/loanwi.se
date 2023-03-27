@@ -1,5 +1,5 @@
 import React from 'react';
-import Dollars from './Dollars';
+import OutputTotalsTable from './OutputTotalsTable';
 import { useAppSelector } from './store';
 import {
   selectInputsValid,
@@ -8,7 +8,7 @@ import {
   selectTotalPayments,
 } from './store/reducer-root';
 
-const OutputTotalsConnected: React.FC = () => {
+const OutputTotalsTableConnected: React.FC = () => {
   const isValid = useAppSelector(selectInputsValid);
 
   const loanPrincipal = useAppSelector(selectPrincipal);
@@ -17,13 +17,13 @@ const OutputTotalsConnected: React.FC = () => {
 
   return (
     isValid ? (
-      <div>
-        <p><Dollars value={loanPrincipal} round /> principal</p>
-        <p><Dollars value={totalInterestPaid} round /> total interest paid</p>
-        <p><Dollars value={totalPayments} round /> total payments</p>
-      </div>
-     ) : null
+      <OutputTotalsTable
+        loanPrincipal={loanPrincipal}
+        totalPayments={totalPayments}
+        totalInterestPaid={totalInterestPaid}
+      />
+    ): null
   );
 };
 
-export default OutputTotalsConnected;
+export default OutputTotalsTableConnected;
