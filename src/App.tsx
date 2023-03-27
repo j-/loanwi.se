@@ -13,7 +13,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App container my-5">
-      <h1 className="text-3xl mb-6">Repayment Calculator</h1>
+      <h1 className="text-3xl mb-6">Loan Wise (loanwi.se)</h1>
       <form onSubmit={handleSubmitForm}>
         <div className="sm:flex gap-8">
           <div className="sm:flex-1">
