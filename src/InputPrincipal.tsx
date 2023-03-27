@@ -23,7 +23,7 @@ const InputPrincipal: React.FC = () => {
         <NumericFormat
           id={id}
           name={Field.LOAN_PRINCIPAL}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-16 text-lg border-grey-light rounded rounded-l-none px-3 relative focus:border-blue focus:shadow"
+          className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 text-lg border-grey-light rounded rounded-l-none px-3 relative focus:border-blue focus:shadow"
           value={principal}
           onValueChange={handleValueChange}
           thousandSeparator=" "

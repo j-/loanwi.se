@@ -18,7 +18,7 @@ const InputTerm: React.FC = () => {
         <input
           id={id}
           name={Field.LOAN_TERM}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative"
+          className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative"
           type="number"
           value={term}
           onChange={handleChangeLoanTerm}
