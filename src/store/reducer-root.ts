@@ -67,7 +67,7 @@ export const selectFortnightlyRepaymentAmount = createSelector(
       loanPrincipal: principal,
       interestRate: rate,
       loanTerm: term,
-      repaymentFrequency: RepaymentFrequency.ANNUALLY,
+      repaymentFrequency: RepaymentFrequency.FORTNIGHTLY,
     })
   ),
 );
