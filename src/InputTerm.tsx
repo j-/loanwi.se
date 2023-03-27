@@ -13,12 +13,12 @@ const InputTerm: React.FC = () => {
 
   return (
     <div className="flex-1">
-      <label htmlFor={id}>Loan term</label><br />
-      <div className="flex flex-wrap items-stretch w-full mb-4 relative">
+      <label htmlFor={id} className="text-grey-darker inline-block mb-2">Loan term</label><br />
+      <div className="flex flex-wrap items-stretch w-full relative bg-white">
         <input
           id={id}
           name={Field.LOAN_TERM}
-          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-10 h-12 border-grey-light rounded rounded-r-none px-3 relative"
+          className="flex-shrink flex-grow flex-auto leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative"
           type="number"
           value={term}
           onChange={handleChangeLoanTerm}

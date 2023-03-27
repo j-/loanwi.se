@@ -15,19 +15,21 @@ const App: React.FC = () => {
     <div className="App container my-5">
       <h1 className="text-3xl mb-6">Loan Wise (loanwi.se)</h1>
       <form onSubmit={handleSubmitForm}>
-        <div className="sm:flex gap-8">
-          <div className="sm:flex-1">
+        <div className="sm:flex">
+          <div className="flex flex-col sm:flex-1 gap-2 p-4 bg-slate-100 rounded-md">
             <InputPrincipal />
             <div className="flex gap-2">
               <InputRate />
               <InputTerm />
             </div>
-            <InputFrequency />
-            <OutputTotalsConnected />
           </div>
-          <div className="sm:flex-1">
+          <div className="sm:flex-1 py-4 sm:p-4">
             <OutputRepaymentAmountsConnected />
           </div>
+        </div>
+        <div className="mt-4">
+          <InputFrequency />
+          <OutputTotalsConnected />
         </div>
       </form>
 

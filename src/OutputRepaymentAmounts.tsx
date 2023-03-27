@@ -16,7 +16,7 @@ const OutputRepaymentAmounts = memo<OutputRepaymentAmountsProps>(({
   fortnightlyRepaymentAmount,
   weeklyRepaymentAmount,
 }) => (
-  <div className="flex flex-col sm:mt-8 gap-1 sm:gap-2">
+  <div className="flex flex-col gap-1 sm:gap-2">
     <OutputRepaymentAmount
       value={annualRepaymentAmount}
       frequency={RepaymentFrequency.ANNUALLY}

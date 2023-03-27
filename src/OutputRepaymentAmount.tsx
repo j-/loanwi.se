@@ -9,8 +9,8 @@ export type OutputRepaymentAmountProps = {
 };
 
 const OutputRepaymentAmount = memo<OutputRepaymentAmountProps>(({ value, frequency }) => (
-  <div className="bg-gray-100">
-    <div className={`h-1 bg-black w-[${1 / frequency * 100}%]`} />
+  <div className="bg-rose-50 rounded">
+    <div className={`h-1 bg-black w-[${1 / frequency * 100}%] rounded`} />
     <span className="text-4xl">
       <Dollars value={value} round />
     </span> / {repaymentPerLabel[frequency]}
