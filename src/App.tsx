@@ -28,7 +28,7 @@ const App: React.FC = () => {
             <OutputRepaymentAmountsConnected />
           </div>
         </div>
-        <div className="mt-6 flex flex-col sm:flex-row sm:flex-1 gap-4 p-4 h-28 bg-slate-100 rounded-md">
+        <div className="mt-6 flex flex-col sm:flex-row sm:flex-1 gap-4 p-4 bg-slate-100 rounded-md">
           <div className="flex-1">
             <InputFrequency />
           </div>
