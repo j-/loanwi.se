@@ -14,7 +14,13 @@ const App: React.FC = () => {
 
   return (
     <div className="App container my-10">
-      <h1 className="text-3xl my-10">Loan Wise (loanwi.se)</h1>
+      <h1 className="text-5xl mt-10 mb-4">
+        <a href="https://loanwi.se">Loan Wise</a>
+      </h1>
+      <h2 className="text-3xl mt-4 mb-10 text-gray-700">
+        <a href="https://loanwi.se">loanwi.se</a>
+      </h2>
+
       <form onSubmit={handleSubmitForm}>
         <div className="my-6 flex flex-col sm:flex-row gap-6">
           <div className="flex flex-col sm:flex-1 gap-2 p-4 bg-slate-100 rounded-md">
