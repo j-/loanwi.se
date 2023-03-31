@@ -13,12 +13,16 @@ const App: React.FC = () => {
 
   return (
     <div className="App container my-10">
-      <h1 className="text-5xl mt-10 mb-4">
-        <a href="https://loanwi.se">Loan Wise</a>
-      </h1>
-      <h2 className="text-3xl mt-4 mb-10 text-gray-700">
-        <a href="https://loanwi.se">loanwi.se</a>
-      </h2>
+      <div className="mt-10 mb-2">
+        <a href="https://loanwi.se" className="inline-block">
+          <h1 className="text-3xl sm:text-5xl mr-4 inline">
+            Loan Wise
+          </h1>
+          <span className="text-xl sm:text-3xl text-gray-700">
+            (loanwi.se)
+          </span>
+        </a>
+      </div>
 
       <form onSubmit={handleSubmitForm}>
         <div className="my-6 flex flex-col sm:flex-row gap-6">
