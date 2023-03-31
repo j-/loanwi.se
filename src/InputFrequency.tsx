@@ -21,7 +21,7 @@ const InputFrequency: React.FC = () => {
         <select
           id={id}
           name={Field.FREQUENCY}
-          className="flex-shrink flex-grow leading-normal w-px flex-1 border h-12 border-grey-light rounded px-3 relative"
+          className="flex-shrink flex-grow leading-normal w-px flex-1 border h-12 border-grey-light rounded px-3 relative bg-white"
           value={repaymentFrequency}
           onChange={handleChangeRepaymentFrequency}
         >
