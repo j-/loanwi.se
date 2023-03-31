@@ -1,13 +1,15 @@
 import React, { useCallback, useId } from 'react';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import { symbol } from './Dollars';
 import { usePrincipal } from './use-principal';
 import { Field } from './types';
+import { useAppSelector } from './store';
+import { selectCurrencySymbol } from './store/reducer-root';
 
 const InputPrincipal: React.FC = () => {
   const id = `InputPrincipal-${useId()}`;
 
   const [principal, setPrincipal] = usePrincipal();
+  const symbol = useAppSelector(selectCurrencySymbol);
 
   const handleValueChange = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
     setPrincipal(values.floatValue || 0);

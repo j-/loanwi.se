@@ -3,4 +3,5 @@ export enum Field {
   INTEREST_RATE = 'rate',
   LOAN_TERM = 'term',
   FREQUENCY = 'frequency',
+  CURRENCY = 'currency',
 };

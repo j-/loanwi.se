@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import InputCurrency from './InputCurrency';
 import InputPrincipal from './InputPrincipal';
 import InputRate from './InputRate';
 import InputTerm from './InputTerm';
@@ -13,15 +14,20 @@ const App: React.FC = () => {
 
   return (
     <div className="App container my-10">
-      <div className="mt-10 mb-2">
-        <a href="https://loanwi.se" className="inline-block">
-          <h1 className="text-3xl sm:text-5xl mr-4 inline">
-            Loan Wise
-          </h1>
-          <span className="text-xl sm:text-3xl text-gray-700">
-            (loanwi.se)
-          </span>
-        </a>
+      <div className="mt-10 mb-2 flex flex-row gap-6">
+        <div className="flex-1 sm:flex-[2]">
+          <a href="https://loanwi.se" className="inline-flex flex-col sm:flex-row h-full sm:items-end gap-2 sm:gap-4">
+            <h1 className="text-3xl sm:text-5xl inline">
+              Loan Wise
+            </h1>
+            <span className="text-xl sm:text-3xl text-gray-700">
+              (loanwi.se)
+            </span>
+          </a>
+        </div>
+        <div className="flex-1">
+          <InputCurrency />
+        </div>
       </div>
 
       <form onSubmit={handleSubmitForm}>

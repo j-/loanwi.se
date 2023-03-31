@@ -20,7 +20,7 @@ const OutputTotalsTable: React.FC<OutputTotalsTableProps> = ({
       <tbody>
         <tr>
           <td className="w-1/4">Principal</td>
-          <td className="w-1/4 px-2 text-end tabular-nums"><Dollars value={loanPrincipal} round /></td>
+          <td className="w-1/4 px-2 text-end tabular-nums"><Dollars value={loanPrincipal} /></td>
           <td className="w-1/2 px-2">
             <div className="h-4 rounded-full bg-gray-50">
               <div className="h-full rounded-full outline outline-blue-400 bg-blue-300" style={{ width: ratioPrincipal * 100 + '%' }} />
@@ -29,7 +29,7 @@ const OutputTotalsTable: React.FC<OutputTotalsTableProps> = ({
         </tr>
         <tr>
           <td>Interest</td>
-          <td className="px-2 text-end tabular-nums"><Dollars value={totalInterestPaid} round /></td>
+          <td className="px-2 text-end tabular-nums"><Dollars value={totalInterestPaid} /></td>
           <td className="px-2">
             <div className="h-4 rounded-full bg-gray-50">
               <div className="h-full rounded-full outline outline-red-400 bg-red-300" style={{ width: ratioInterest * 100 + '%' }} />
@@ -45,7 +45,7 @@ const OutputTotalsTable: React.FC<OutputTotalsTableProps> = ({
               borderBottom: '3px double #000',
             }}
           >
-            <Dollars value={totalPayments} round />
+            <Dollars value={totalPayments} />
           </td>
           <td className="px-2">
             <div className="h-4 rounded-full bg-gray-50">

@@ -1,27 +1,38 @@
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
-import storageSession from 'redux-persist/lib/storage/session'
+import storageLocal from 'redux-persist/lib/storage';
+import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
 import { calculateRepaymentAmount, RepaymentFrequency } from '../repayments';
+import * as config from './reducer-config';
 import * as inputs from './reducer-inputs';
 
 export type ReducerState = {
+  config: config.ReducerState;
   inputs: inputs.ReducerState;
 };
 
 export const initialState: ReducerState = {
+  config: config.initialState,
   inputs: inputs.initialState,
 };
 
 export const reducer = combineReducers({
+  config: persistReducer({
+    key: 'config',
+    storage: storageLocal,
+  }, config.reducer),
   inputs: persistReducer({
     key: 'inputs',
     storage: storageSession,
   }, inputs.reducer),
 });
 
+const selectConfig = (state: ReducerState) => state.config;
 const selectInputs = (state: ReducerState) => state.inputs;
 
+export const selectCurrencyCode = createSelector(selectConfig, config.selectCurrencyCode);
+export const selectCurrencySymbol = createSelector(selectConfig, config.selectCurrencySymbol);
 export const selectPrincipal = createSelector(selectInputs, inputs.selectPrincipal);
 export const selectRate = createSelector(selectInputs, inputs.selectRate);
 export const selectTerm = createSelector(selectInputs, inputs.selectTerm);
