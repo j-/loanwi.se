@@ -5,7 +5,6 @@ import InputTerm from './InputTerm';
 import InputFrequency from './InputFrequency';
 import OutputRepaymentAmountsConnected from './OutputRepaymentAmountsConnected';
 import OutputTotalsTableConnected from './OutputTotalsTableConnected';
-import OutputTotalsChartConnected from './OutputTotalsChartConnected';
 
 const App: React.FC = () => {
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
@@ -41,9 +40,6 @@ const App: React.FC = () => {
           <div className="flex-[2] flex flex-row gap-4">
             <div className="flex-1">
               <OutputTotalsTableConnected />
-            </div>
-            <div className="flex-1">
-              <OutputTotalsChartConnected />
             </div>
           </div>
         </div>
