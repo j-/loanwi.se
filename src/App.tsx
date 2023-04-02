@@ -27,7 +27,7 @@ const App: React.FC = () => {
           </a>
         </div>
         <div className="flex-1 flex flex-col justify-end">
-          <div>
+          <div className="p-4">
             <InputCurrency />
           </div>
         </div>
