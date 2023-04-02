@@ -16,7 +16,7 @@ const App: React.FC = () => {
     <div className="App container my-10">
       <div className="mt-10 mb-2 flex flex-row gap-6">
         <div className="flex-1 sm:flex-[2]">
-          <a href="https://loanwi.se" className="inline-flex flex-col sm:flex-row h-full sm:items-end gap-2 sm:gap-4">
+          <a href="https://loanwi.se" className="inline-flex flex-col sm:flex-row h-full sm:items-end gap-2 sm:gap-4 hover:bg-gray-50 rounded-lg p-4">
             <img src="/icon.svg" width={40} height={40} className="w-8 sm:w-10 md:w-12" />
             <h1 className="text-2xl sm:text-3xl md:text-5xl inline">
               Loan Wise
@@ -26,8 +26,10 @@ const App: React.FC = () => {
             </span>
           </a>
         </div>
-        <div className="flex-1">
-          <InputCurrency />
+        <div className="flex-1 flex flex-col justify-end">
+          <div>
+            <InputCurrency />
+          </div>
         </div>
       </div>
 
