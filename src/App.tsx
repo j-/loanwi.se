@@ -6,6 +6,7 @@ import InputTerm from './InputTerm';
 import InputFrequency from './InputFrequency';
 import OutputRepaymentAmountsConnected from './OutputRepaymentAmountsConnected';
 import OutputTotalsTableConnected from './OutputTotalsTableConnected';
+import AmortizationSchedule from './AmortizationScheduleConnected';
 
 const App: React.FC = () => {
   const handleSubmitForm = useCallback<React.FormEventHandler>((e) => {
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="App container my-10">
+    <div className="App container mt-10 mb-20">
       <div className="mt-10 mb-2 flex flex-row gap-6">
         <div className="flex-1 sm:flex-[2]">
           <a href="https://loanwi.se" className="inline-flex flex-col sm:flex-row h-full sm:items-end gap-2 sm:gap-4 hover:bg-gray-50 rounded-lg p-4">
@@ -57,6 +58,10 @@ const App: React.FC = () => {
           </div>
         </div>
       </form>
+
+      <div className="my-6 flex flex-col sm:flex-1 gap-2 p-4 bg-slate-100 rounded-md h-96">
+        <AmortizationSchedule />
+      </div>
     </div>
   );
 };

@@ -3,7 +3,11 @@ import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import storageSession from 'redux-persist/lib/storage/session';
 import { createSelector } from 'reselect';
-import { calculateRepaymentAmount, RepaymentFrequency } from '../repayments';
+import {
+  buildRepaymentSchedule,
+  calculateRepaymentAmount,
+  RepaymentFrequency,
+} from '../repayments';
 import * as config from './reducer-config';
 import * as inputs from './reducer-inputs';
 
@@ -98,6 +102,24 @@ export const selectWeeklyRepaymentAmount = createSelector(
   ),
 );
 
+export const selectRepaymentAmount = createSelector(
+  [
+    selectWeeklyRepaymentAmount,
+    selectFortnightlyRepaymentAmount,
+    selectMonthlyRepaymentAmount,
+    selectAnnualRepaymentAmount,
+    selectFrequency,
+  ],
+  (weekly, fortnightly, monthly, annually, frequency) => {
+    switch (frequency) {
+      case RepaymentFrequency.ANNUALLY: return annually;
+      case RepaymentFrequency.MONTHLY: return monthly;
+      case RepaymentFrequency.FORTNIGHTLY: return fortnightly;
+      case RepaymentFrequency.WEEKLY: return weekly;
+    }
+  },
+);
+
 export const selectTotalPayments = createSelector(
   [
     selectAnnualRepaymentAmount,
@@ -138,5 +160,42 @@ export const selectTotalInterest = createSelector(
     totalPayments,
   ) => (
     totalPayments - principal
+  ),
+);
+
+export const selectRateRatio = createSelector(
+  selectRateFloat,
+  (rate) => rate / 100,
+);
+
+export const selectRatePeriodRatio = createSelector(
+  selectRateRatio, selectFrequency,
+  (rate, freq) => rate / freq,
+);
+
+export const selectNumberOfPeriods = createSelector(
+  selectTermFloat, selectFrequency,
+  (term, freq) => term * freq,
+);
+
+export const selectAmortizationSchedule = createSelector(
+  [
+    selectPrincipalFloat,
+    selectRepaymentAmount,
+    selectRatePeriodRatio,
+    selectNumberOfPeriods,
+  ],
+  (
+    loanAmount,
+    repaymentAmount,
+    interestRatePeriodRatio,
+    numberOfRepayments,
+  ) => (
+    buildRepaymentSchedule({
+      loanAmount,
+      repaymentAmount,
+      interestRatePeriodRatio,
+      numberOfRepayments,
+    })
   ),
 );
