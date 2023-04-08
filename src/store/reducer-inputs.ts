@@ -37,7 +37,7 @@ const isActionRehydrate = (action: Action): action is RehydrateAction => (
   action.type === REHYDRATE
 );
 
-const isActionRehydrateInputs = (action: Action): action is RehydrateAction & { payload: ReducerState } => (
+const isActionRehydrateInputs = (action: Action): action is RehydrateAction & { payload?: ReducerState } => (
   isActionRehydrate(action) && action.key === 'inputs'
 );
 
@@ -74,6 +74,10 @@ export const reducer: Reducer<ReducerState> = (state = initialState, action) => 
   }
 
   if (isActionRehydrateInputs(action)) {
+    if (!action.payload) {
+      return state;
+    }
+
     return {
       ...state,
       principalFormatted: action.payload.principalFormatted || String(action.payload.principalFloat),
