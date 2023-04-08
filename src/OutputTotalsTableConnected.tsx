@@ -3,7 +3,7 @@ import OutputTotalsTable from './OutputTotalsTable';
 import { useAppSelector } from './store';
 import {
   selectInputsValid,
-  selectPrincipal,
+  selectPrincipalFloat,
   selectTotalInterest,
   selectTotalPayments,
 } from './store/reducer-root';
@@ -11,7 +11,7 @@ import {
 const OutputTotalsTableConnected: React.FC = () => {
   const isValid = useAppSelector(selectInputsValid);
 
-  const loanPrincipal = useAppSelector(selectPrincipal);
+  const loanPrincipal = useAppSelector(selectPrincipalFloat);
   const totalPayments = useAppSelector(selectTotalPayments);
   const totalInterestPaid = useAppSelector(selectTotalInterest);
 

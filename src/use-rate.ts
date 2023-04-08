@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from './store';
 import { setRate } from './store/action-set-rate';
-import { selectRate } from './store/reducer-root';
+import { selectRateFloat, selectRateFormatted } from './store/reducer-root';
+import { NumberFormatValues } from 'react-number-format';
 
 export const useRate = () => {
   const dispatch = useAppDispatch();
-  const value = useAppSelector(selectRate);
-  const update = useCallback((value: number) => {
-    dispatch(setRate(value));
+  const float = useAppSelector(selectRateFloat);
+  const formatted = useAppSelector(selectRateFormatted);
+  const update = useCallback((values: NumberFormatValues) => {
+    dispatch(setRate(values));
   }, [dispatch]);
-  return [value, update] as const;
+  return [{ float, formatted }, update] as const;
 };

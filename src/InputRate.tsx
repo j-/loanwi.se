@@ -1,30 +1,37 @@
 import React, { useCallback, useId } from 'react';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { useRate } from './use-rate';
 import { Field } from './types';
+
+const MAX_LIMIT = 100;
 
 const InputRate: React.FC = () => {
   const id = `InputRate-${useId()}`;
 
-  const [rate, setRate] = useRate();
+  const [{ formatted: rate }, setRate] = useRate();
 
-  const handleChangeInterestRate = useCallback<React.ChangeEventHandler<HTMLInputElement>>((e) => {
-    setRate(e.currentTarget.valueAsNumber);
+  const handleChangeInterestRate = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
+    setRate(values);
   }, [setRate]);
 
   return (
     <div className="flex-1">
       <label htmlFor={id} className="text-grey-darker inline-block mb-2">Interest rate</label><br />
       <div className="flex flex-wrap items-stretch w-full relative">
-        <input
+        <NumericFormat
           id={id}
           name={Field.INTEREST_RATE}
           className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative bg-white"
-          type="number"
           value={rate}
-          onChange={handleChangeInterestRate}
-          inputMode="numeric"
+          onValueChange={handleChangeInterestRate}
           min={0}
-          max={100}
+          max={MAX_LIMIT}
+          isAllowed={(values) => {
+            const { floatValue } = values;
+            return floatValue == null || floatValue <= MAX_LIMIT;
+          }}
+          allowNegative={false}
+          decimalScale={2}
           step={0.1}
         />
         <div className="flex -mr-px">

@@ -5,14 +5,16 @@ import { Field } from './types';
 import { useAppSelector } from './store';
 import { selectCurrencySymbol } from './store/reducer-root';
 
+const MAX_LIMIT = 999_999_999;
+
 const InputPrincipal: React.FC = () => {
   const id = `InputPrincipal-${useId()}`;
 
-  const [principal, setPrincipal] = usePrincipal();
+  const [{ formatted: principal }, setPrincipal] = usePrincipal();
   const symbol = useAppSelector(selectCurrencySymbol);
 
   const handleValueChange = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
-    setPrincipal(values.floatValue || 0);
+    setPrincipal(values);
   }, [setPrincipal]);
 
   return (
@@ -29,9 +31,14 @@ const InputPrincipal: React.FC = () => {
           value={principal}
           onValueChange={handleValueChange}
           thousandSeparator=" "
-          inputMode="numeric"
           min={0}
-          max={999999999}
+          max={MAX_LIMIT}
+          isAllowed={(values) => {
+            const { floatValue } = values;
+            return floatValue == null || floatValue <= MAX_LIMIT;
+          }}
+          allowNegative={false}
+          decimalScale={0}
         />
       </div>
     </div>

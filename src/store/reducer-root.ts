@@ -33,13 +33,16 @@ const selectInputs = (state: ReducerState) => state.inputs;
 
 export const selectCurrencyCode = createSelector(selectConfig, config.selectCurrencyCode);
 export const selectCurrencySymbol = createSelector(selectConfig, config.selectCurrencySymbol);
-export const selectPrincipal = createSelector(selectInputs, inputs.selectPrincipal);
-export const selectRate = createSelector(selectInputs, inputs.selectRate);
-export const selectTerm = createSelector(selectInputs, inputs.selectTerm);
+export const selectPrincipalFloat = createSelector(selectInputs, inputs.selectPrincipalFloat);
+export const selectPrincipalFormatted = createSelector(selectInputs, inputs.selectPrincipalFormatted);
+export const selectRateFloat = createSelector(selectInputs, inputs.selectRateFloat);
+export const selectRateFormatted = createSelector(selectInputs, inputs.selectRateFormatted);
+export const selectTermFloat = createSelector(selectInputs, inputs.selectTermFloat);
+export const selectTermFormatted = createSelector(selectInputs, inputs.selectTermFormatted);
 export const selectFrequency = createSelector(selectInputs, inputs.selectFrequency);
 
 export const selectInputsValid = createSelector(
-  [selectPrincipal, selectRate, selectTerm],
+  [selectPrincipalFloat, selectRateFloat, selectTermFloat],
   (principal, rate, term) => (
     !isNaN(principal) && principal > 0 &&
     !isNaN(rate) && rate > 0 &&
@@ -48,7 +51,7 @@ export const selectInputsValid = createSelector(
 );
 
 export const selectMonthlyRepaymentAmount = createSelector(
-  [selectPrincipal, selectRate, selectTerm],
+  [selectPrincipalFloat, selectRateFloat, selectTermFloat],
   (principal, rate, term) => (
     calculateRepaymentAmount({
       loanPrincipal: principal,
@@ -60,7 +63,7 @@ export const selectMonthlyRepaymentAmount = createSelector(
 );
 
 export const selectAnnualRepaymentAmount = createSelector(
-  [selectPrincipal, selectRate, selectTerm],
+  [selectPrincipalFloat, selectRateFloat, selectTermFloat],
   (principal, rate, term) => (
     calculateRepaymentAmount({
       loanPrincipal: principal,
@@ -72,7 +75,7 @@ export const selectAnnualRepaymentAmount = createSelector(
 );
 
 export const selectFortnightlyRepaymentAmount = createSelector(
-  [selectPrincipal, selectRate, selectTerm],
+  [selectPrincipalFloat, selectRateFloat, selectTermFloat],
   (principal, rate, term) => (
     calculateRepaymentAmount({
       loanPrincipal: principal,
@@ -84,7 +87,7 @@ export const selectFortnightlyRepaymentAmount = createSelector(
 );
 
 export const selectWeeklyRepaymentAmount = createSelector(
-  [selectPrincipal, selectRate, selectTerm],
+  [selectPrincipalFloat, selectRateFloat, selectTermFloat],
   (principal, rate, term) => (
     calculateRepaymentAmount({
       loanPrincipal: principal,
@@ -99,7 +102,7 @@ export const selectTotalPayments = createSelector(
   [
     selectAnnualRepaymentAmount,
     selectFortnightlyRepaymentAmount,
-    selectTerm,
+    selectTermFloat,
     selectMonthlyRepaymentAmount,
     selectFrequency,
     selectWeeklyRepaymentAmount,
@@ -127,7 +130,7 @@ export const selectTotalPayments = createSelector(
 
 export const selectTotalInterest = createSelector(
   [
-    selectPrincipal,
+    selectPrincipalFloat,
     selectTotalPayments
   ],
   (

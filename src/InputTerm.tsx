@@ -1,30 +1,37 @@
 import React, { useCallback, useId } from 'react';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { useTerm } from './use-term';
 import { Field } from './types';
+
+const MAX_LIMIT = 1_000;
 
 const InputTerm: React.FC = () => {
   const id = `InputTerm-${useId()}`;
 
-  const [term, setTerm] = useTerm();
+  const [{ formatted: term }, setTerm] = useTerm();
 
-  const handleChangeLoanTerm = useCallback<React.ChangeEventHandler<HTMLInputElement>>((e) => {
-    setTerm(e.currentTarget.valueAsNumber);
+  const handleChangeLoanTerm = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
+    setTerm(values);
   }, [setTerm]);
 
   return (
     <div className="flex-1">
       <label htmlFor={id} className="text-grey-darker inline-block mb-2">Loan term</label><br />
       <div className="flex flex-wrap items-stretch w-full relative">
-        <input
+        <NumericFormat
           id={id}
           name={Field.LOAN_TERM}
           className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative bg-white"
-          type="number"
           value={term}
-          onChange={handleChangeLoanTerm}
-          inputMode="numeric"
+          onValueChange={handleChangeLoanTerm}
           min={1}
-          max={100}
+          max={MAX_LIMIT}
+          isAllowed={(values) => {
+            const { floatValue } = values;
+            return floatValue == null || floatValue <= MAX_LIMIT;
+          }}
+          allowNegative={false}
+          decimalScale={0}
           step={1}
         />
         <div className="flex -mr-px">

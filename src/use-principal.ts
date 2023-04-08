@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
+import { NumberFormatValues } from 'react-number-format';
 import { useAppDispatch, useAppSelector } from './store';
 import { setPrincipal } from './store/action-set-principal';
-import { selectPrincipal } from './store/reducer-root';
+import { selectPrincipalFloat, selectPrincipalFormatted } from './store/reducer-root';
 
 export const usePrincipal = () => {
   const dispatch = useAppDispatch();
-  const value = useAppSelector(selectPrincipal);
-  const update = useCallback((value: number) => {
-    dispatch(setPrincipal(value));
+  const float = useAppSelector(selectPrincipalFloat);
+  const formatted = useAppSelector(selectPrincipalFormatted);
+  const update = useCallback((values: NumberFormatValues) => {
+    dispatch(setPrincipal(values));
   }, [dispatch]);
-  return [value, update] as const;
+  return [{ float, formatted }, update] as const;
 };
