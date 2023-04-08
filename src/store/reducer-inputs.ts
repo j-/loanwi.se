@@ -1,9 +1,10 @@
-import { Reducer } from 'redux';
+import { Action, Reducer } from 'redux';
 import { RepaymentFrequency } from '../repayments';
 import { isActionSetFrequency } from './action-set-frequency';
 import { isActionSetPrincipal } from './action-set-principal';
 import { isActionSetRate } from './action-set-rate';
 import { isActionSetTerm } from './action-set-term';
+import { REHYDRATE, RehydrateAction } from 'redux-persist';
 
 const DEFAULT_LOAN_PRINCIPAL_FORMATTED = '30 000';
 const DEFAULT_LOAN_PRINCIPAL_FLOAT = 30000;
@@ -31,6 +32,14 @@ export const initialState: ReducerState = {
   termFormatted: DEFAULT_LOAN_TERM_FORMATTED,
   frequency: RepaymentFrequency.MONTHLY,
 };
+
+const isActionRehydrate = (action: Action): action is RehydrateAction => (
+  action.type === REHYDRATE
+);
+
+const isActionRehydrateInputs = (action: Action): action is RehydrateAction & { payload: ReducerState } => (
+  isActionRehydrate(action) && action.key === 'inputs'
+);
 
 export const reducer: Reducer<ReducerState> = (state = initialState, action) => {
   if (isActionSetPrincipal(action)) {
@@ -61,6 +70,15 @@ export const reducer: Reducer<ReducerState> = (state = initialState, action) => 
     return {
       ...state,
       frequency: action.payload,
+    };
+  }
+
+  if (isActionRehydrateInputs(action)) {
+    return {
+      ...state,
+      principalFormatted: action.payload.principalFormatted || String(action.payload.principalFloat),
+      rateFormatted: action.payload.rateFormatted || String(action.payload.rateFloat),
+      termFormatted: action.payload.termFormatted || String(action.payload.termFloat),
     };
   }
 

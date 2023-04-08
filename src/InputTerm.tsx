@@ -1,5 +1,5 @@
-import React, { useCallback, useId } from 'react';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
+import React, { useId } from 'react';
+import { NumericFormat } from 'react-number-format';
 import { useTerm } from './use-term';
 import { Field } from './types';
 
@@ -10,10 +10,6 @@ const InputTerm: React.FC = () => {
 
   const [{ formatted: term }, setTerm] = useTerm();
 
-  const handleChangeLoanTerm = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
-    setTerm(values);
-  }, [setTerm]);
-
   return (
     <div className="flex-1">
       <label htmlFor={id} className="text-grey-darker inline-block mb-2">Loan term</label><br />
@@ -23,7 +19,7 @@ const InputTerm: React.FC = () => {
           name={Field.LOAN_TERM}
           className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative bg-white"
           value={term}
-          onValueChange={handleChangeLoanTerm}
+          onValueChange={setTerm}
           min={1}
           max={MAX_LIMIT}
           isAllowed={(values) => {

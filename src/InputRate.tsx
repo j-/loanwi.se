@@ -1,5 +1,5 @@
-import React, { useCallback, useId } from 'react';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
+import React, { useId } from 'react';
+import { NumericFormat } from 'react-number-format';
 import { useRate } from './use-rate';
 import { Field } from './types';
 
@@ -10,10 +10,6 @@ const InputRate: React.FC = () => {
 
   const [{ formatted: rate }, setRate] = useRate();
 
-  const handleChangeInterestRate = useCallback<NonNullable<NumericFormatProps<unknown>['onValueChange']>>((values) => {
-    setRate(values);
-  }, [setRate]);
-
   return (
     <div className="flex-1">
       <label htmlFor={id} className="text-grey-darker inline-block mb-2">Interest rate</label><br />
@@ -23,7 +19,7 @@ const InputRate: React.FC = () => {
           name={Field.INTEREST_RATE}
           className="flex-shrink flex-grow leading-normal w-px flex-1 border h-16 border-grey-light rounded rounded-r-none px-3 relative bg-white"
           value={rate}
-          onValueChange={handleChangeInterestRate}
+          onValueChange={setRate}
           min={0}
           max={MAX_LIMIT}
           isAllowed={(values) => {
