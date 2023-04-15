@@ -9,7 +9,7 @@ export type AmortizationScheduleProps = {
 
 const AmortizationSchedule: FC<AmortizationScheduleProps> = ({ schedule }) => (
   <TableVirtuoso
-    className="bg-white w-full h-full"
+    className="bg-white w-full h-full overscroll-contain"
     data={schedule}
     fixedHeaderContent={() => (
       <tr>
