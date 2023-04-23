@@ -18,10 +18,10 @@ const App: React.FC = () => {
       <div className="mt-10 mb-2 flex flex-row gap-6">
         <div className="flex-1 sm:flex-[2]">
           <a href="https://loanwi.se" className="inline-flex flex-col sm:flex-row h-full sm:items-end gap-2 sm:gap-4 hover:bg-gray-50 rounded-lg p-4">
-            <img src="/icon.svg" alt="Coin icon" width={40} height={40} className="w-8 sm:w-10 md:w-12" />
+            <img src="/icon.svg" alt="Coin icon" width={40} height={40} className="w-8 sm:w-10 md:w-12" draggable={false} />
             <h1 className="text-2xl sm:text-3xl md:text-5xl inline">
               Loan Wise
-            </h1>
+            </h1>{' '}
             <span className="text-lg sm:text-xl md:text-3xl text-gray-700">
               (loanwi.se)
             </span>
