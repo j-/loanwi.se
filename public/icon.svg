@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-45 -45 90 90">
-  <circle fill="#fc0" cx="0" cy="0" r="44" stroke="#fc0" stroke-width="2" stroke-dasharray="5 5" />
-  <circle fill="#fe8" cx="0" cy="0" r="35" />
+  <circle fill="#fc0" r="44" stroke="#fc0" stroke-width="2" stroke-dasharray="5" />
+  <circle fill="#fe8" r="35" />
   <path fill="#ea1" d="M2-32H-2V32H2ZM0-4A10 8 0 1110-12H20A20 16 0 100 4 10 8 0 11-10 12H-20A20 16 0 100-4"/>
 </svg>
